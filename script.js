@@ -16,6 +16,7 @@ const addNote = () => {
   let note = document.querySelector("#add_note").value;
   note = note[0].toUpperCase() + note.substring(1);
   notes.innerHTML = `<div class="note"><div class="content">${marked.parse(note)}</div><button id="edit" onclick="editNote(event)">Edit</button><button onclick="deleteNote(event)">Delete</button></div>` + notes.innerHTML;
+  document.querySelector("#add_note").value = ''
 };
 
 const editNote = (e) => {
