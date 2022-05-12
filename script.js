@@ -52,6 +52,7 @@ const deleteAllNote = () => {
   if (confirmation && confirmation.toLowerCase() === "yes") {
     document.querySelector("#notes").innerHTML = "";
     alert("Deleted!");
+    localStorage.clear();
   }
 };
 
