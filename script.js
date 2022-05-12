@@ -3,10 +3,11 @@ window.onload = function () {
     let notes = document.querySelector("#notes");
     let data = JSON.parse(localStorage.getItem("myNote"));
     data.forEach((note) => {
-      console.log(note.note);
-      notes.innerHTML = `<div class="note"><div class="content">${marked.parse(
-        note.note
-      )}</div><button id="edit" onclick="editNote(event)">Edit</button><button onclick="deleteNote(event)">Delete</button></div>` + notes.innerHTML;
+      notes.innerHTML =
+        `<div class="note"><div class="content">${marked.parse(
+          note.note
+        )}</div><button id="edit" onclick="editNote(event)">Edit</button><button onclick="deleteNote(event)">Delete</button></div>` +
+        notes.innerHTML;
     });
   }
 };
@@ -15,8 +16,12 @@ const addNote = () => {
   let notes = document.querySelector("#notes");
   let note = document.querySelector("#add_note").value;
   note = note[0].toUpperCase() + note.substring(1);
-  notes.innerHTML = `<div class="note"><div class="content">${marked.parse(note)}</div><button id="edit" onclick="editNote(event)">Edit</button><button onclick="deleteNote(event)">Delete</button></div>` + notes.innerHTML;
-  document.querySelector("#add_note").value = ''
+  notes.innerHTML =
+    `<div class="note"><div class="content">${marked.parse(
+      note
+    )}</div><button id="edit" onclick="editNote(event)">Edit</button><button onclick="deleteNote(event)">Delete</button></div>` +
+    notes.innerHTML;
+  document.querySelector("#add_note").value = "";
 };
 
 const editNote = (e) => {
@@ -43,15 +48,25 @@ const deleteNote = (e) => {
 };
 
 const deleteAllNote = () => {
-  document.querySelector("#notes").innerHTML = "";
+  const confirmation = prompt("Are you sure? Please type yes or no.");
+  if (confirmation && confirmation.toLowerCase() === "yes") {
+    document.querySelector("#notes").innerHTML = "";
+    alert("Deleted!");
+  }
 };
 
 const addLocalStorage = () => {
   let data = [];
   let notes = document.querySelectorAll("div.content");
-  notes.forEach((p) => data.push({ note: p.innerHTML }));
-  localStorage.clear();
-  localStorage.setItem("myNote", JSON.stringify(data));
+  try {
+    notes.forEach((p) => data.push({ note: p.innerHTML }));
+    localStorage.clear();
+    localStorage.setItem("myNote", JSON.stringify(data));
+    alert(`Saved!`);
+  } catch (e) {
+    console.log(e);
+    alert("Something's wrong! Please try again later!");
+  }
 };
 
 const saveEdit = (e) => {
