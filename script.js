@@ -1,35 +1,35 @@
 window.onload = function () {
   if (localStorage.getItem("myNote")) {
-    let notes = document.querySelector("#notes");
-    let data = JSON.parse(localStorage.getItem("myNote"));
-    data.forEach((note) => {
-      notes.innerHTML =
-        `<div class="note"><div class="content">${marked.parse(
-          note.note
-        )}</div><button id="edit" onclick="editNote(event)">Edit</button><button onclick="deleteNote(event)">Delete</button></div>` +
-        notes.innerHTML;
+    const notes = document.querySelector("#notes");
+    const dataFromLocal = JSON.parse(localStorage.getItem("myNote"));
+    dataFromLocal.forEach((data) => {
+      notes.innerHTML += `<div class="note"><div class="content">${marked.parse(
+        data.note
+      )}</div><button id="edit" onclick="editNote(event)">Edit</button><button onclick="deleteNote(event)">Delete</button></div>`;
     });
   }
 };
 
 const addNote = () => {
-  let notes = document.querySelector("#notes");
+  const notes = document.querySelector("#notes");
   let note = document.querySelector("#add_note").value;
-  note = note[0].toUpperCase() + note.substring(1);
-  notes.innerHTML =
-    `<div class="note"><div class="content">${marked.parse(
-      note
-    )}</div><button id="edit" onclick="editNote(event)">Edit</button><button onclick="deleteNote(event)">Delete</button></div>` +
-    notes.innerHTML;
-  document.querySelector("#add_note").value = "";
+  if (note) {
+    note = note[0].toUpperCase() + note.substring(1);
+    notes.innerHTML =
+      `<div class="note"><div class="content">${marked.parse(
+        note
+      )}</div><button id="edit" onclick="editNote(event)">Edit</button><button onclick="deleteNote(event)">Delete</button></div>` +
+      notes.innerHTML;
+    document.querySelector("#add_note").value = "";
+  } else alert("Input your note first!");
 };
 
 const editNote = (e) => {
-  let old = e.target.parentNode.querySelector("div.content").textContent;
-  let textarea;
+  let currentNote =
+    e.target.parentNode.querySelector("div.content").textContent;
   if (!e.target.parentNode.getElementsByTagName("textarea")[0]) {
-    textarea = document.createElement("textarea");
-    textarea.value = old;
+    let textarea = document.createElement("textarea");
+    textarea.value = currentNote;
     e.target.parentNode.prepend(textarea);
   }
   if (!e.target.parentElement.querySelector("#saveEdit")) {
@@ -49,18 +49,22 @@ const deleteNote = (e) => {
 
 const deleteAllNote = () => {
   const confirmation = prompt("Are you sure? Please type yes or no.");
-  if (confirmation && confirmation.toLowerCase() === "yes") {
+  if (confirmation.toLowerCase() === "yes") {
     document.querySelector("#notes").innerHTML = "";
     alert("Deleted!");
     localStorage.clear();
-  }
+  } else if (
+    confirmation.toLowerCase() !== "yes" &&
+    confirmation.toLowerCase() !== "no"
+  )
+    alert("Only yes or no please!");
 };
 
 const addLocalStorage = () => {
+  const notes = document.querySelectorAll("div.content");
   let data = [];
-  let notes = document.querySelectorAll("div.content");
   try {
-    notes.forEach((p) => data.push({ note: p.innerHTML }));
+    notes.forEach((note) => data.push({ note: note.innerHTML }));
     localStorage.clear();
     localStorage.setItem("myNote", JSON.stringify(data));
     alert(`Saved!`);
