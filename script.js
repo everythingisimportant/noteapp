@@ -8,6 +8,8 @@ window.onload = function () {
       )}</div><button id="edit" onclick="editNote(event)">Edit</button><button onclick="deleteNote(event)">Delete</button></div>`;
     });
   }
+  let ta = document.getElementById("add_note");
+  ta.setAttribute("placeholder", "Write your note here\nHint: you can use Markdown\n## like this is header 2\n- this is list order 1\n- list order 2");
 };
 
 const addNote = () => {
